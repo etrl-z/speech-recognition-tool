@@ -23,11 +23,11 @@ startButton.onclick = () => {
         console.error('Speech Recognition Error: ', e.error);
     };
 
-    // recognition.onend = () => {
-    //     if (speech) {
-    //         recognition.start(); // Restart recognition if speech is still true
-    //     }
-    // };
+    recognition.onend = () => {
+        if (speech) {
+            recognition.start(); // Restart recognition if speech is still true
+        }
+    };
 
     if (speech) {
         recognition.start();
