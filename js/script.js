@@ -20,7 +20,7 @@ startButton.onclick = () => {
             .map(result => result[0])
             .map(result => result.transcript)
             .join('');
-        textArea.value = transcript;
+        textArea.value += transcript;
     };
 
     recognition.onerror = (e) => {
