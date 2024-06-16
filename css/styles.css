@@ -47,9 +47,10 @@ body, html {
 }
 
 /* Stile per il pulsante */
-.start-button {
+.button {
     width: 120px;
     padding: 10px 20px;
+    margin: 10px 20px;
     font-size: 16px;
     color: #fff;
     background: linear-gradient(45deg, #007BFF, #0056b3);
@@ -64,14 +65,14 @@ body, html {
 }
 
 /* Cambia il colore di sfondo del pulsante al passaggio del mouse e aggiunge una leggera traslazione */
-.start-button:hover {
+.button:hover {
     background: linear-gradient(45deg, #0056b3, #007BFF);
     box-shadow: 0 6px 12px rgba(0, 123, 255, 0.6);
     transform: translateY(-2px);
 }
 
 /* Effetto attivo al clic */
-.start-button:active {
+.button:active {
     transform: translateY(0);
     box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
 }

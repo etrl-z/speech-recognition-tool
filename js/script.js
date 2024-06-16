@@ -1,8 +1,7 @@
 debugger
 const startButton = document.getElementById('startButton');
+const copyButton = document.getElementById('copyButton');
 const textArea = document.getElementById('textInput');
-
-let accumulatedText = "";
 
 startButton.onclick = () => {
     var speech = true;
@@ -18,9 +17,7 @@ startButton.onclick = () => {
 
     recognition.onresult = (e) => {
         const transcript = e.results[0][0].transcript;
-        
-        accumulatedText += transcript + " ";
-        textArea.innerHTML = accumulatedText;
+        textArea.innerHTML = transcript;
     }
 
     recognition.onerror = (e) => {
@@ -36,4 +33,12 @@ startButton.onclick = () => {
     if (speech) {
         recognition.start();
     }
+}
+
+copyButton.onclick = () => {
+    navigator.clipboard.writeText(textArea.innerHTML).then(function () {
+        alert('Copied to clipboard!');
+    }, function (error) {
+        console.error('Copy text Error: ', error);
+    });
 }
