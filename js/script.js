@@ -15,12 +15,21 @@ startButton.onclick = () => {
     const recognition = new SpeechRecognition();
     recognition.interimResults = true;
 
+    let finalTranscript = '';
+
     recognition.onresult = (e) => {
-        const transcript = Array.from(e.results)
-            .map(result => result[0])
-            .map(result => result.transcript)
-            .join('');
-        textArea.value = transcript;
+        let interimTranscript = '';
+
+        for (let i = 0; i < e.results.length; i++) {
+            const transcript = e.results[i][0].transcript;
+            if (e.results[i].isFinal) {
+                finalTranscript += transcript + ' ';
+            } else {
+                interimTranscript += transcript;
+            }
+        }
+
+        textArea.value = finalTranscript + interimTranscript;
     };
 
     recognition.onerror = (e) => {
