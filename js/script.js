@@ -16,9 +16,12 @@ startButton.onclick = () => {
     recognition.interimResults = true;
 
     recognition.onresult = (e) => {
-        const transcript = e.results[0][0].transcript;
-        textArea.innerHTML = transcript;
-    }
+        const transcript = Array.from(e.results)
+            .map(result => result[0])
+            .map(result => result.transcript)
+            .join('');
+        textArea.value = transcript;
+    };
 
     recognition.onerror = (e) => {
         console.error('Speech Recognition Error: ', e.error);
@@ -36,7 +39,7 @@ startButton.onclick = () => {
 }
 
 copyButton.onclick = () => {
-    navigator.clipboard.writeText(textArea.innerHTML).then(function () {
+    navigator.clipboard.writeText(textArea.value).then(function () {
         alert('Copied to clipboard!');
     }, function (error) {
         console.error('Copy text Error: ', error);

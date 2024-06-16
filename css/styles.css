@@ -46,6 +46,11 @@ body, html {
     outline: none; /* Rimuove il contorno predefinito */
 }
 
+.button-container {
+    display: flex;
+    gap: 20px;
+}
+
 /* Stile per il pulsante */
 .button {
     width: 120px;
