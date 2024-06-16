@@ -20,7 +20,7 @@ startButton.onclick = () => {
         const transcript = e.results[0][0].transcript;
         
         accumulatedText += transcript + " ";
-        textArea.innerHTML = transcript;
+        textArea.innerHTML = accumulatedText;
     }
 
     recognition.onerror = (e) => {
