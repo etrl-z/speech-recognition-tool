@@ -1,7 +1,8 @@
+debugger
 const startButton = document.getElementById('startButton');
 const textArea = document.getElementById('textInput');
 
-let accumulatedText = ''; // Variable to store accumulated text
+let accumulatedText = "";
 
 startButton.onclick = () => {
     var speech = true;
@@ -16,13 +17,11 @@ startButton.onclick = () => {
     recognition.interimResults = true;
 
     recognition.onresult = (e) => {
-        let transcript = '';
-        for (let i = 0; i < e.results.length; ++i) {
-            transcript += e.results[i][0].transcript;
-        }
-        accumulatedText += transcript + ' '; // Append the new transcript to the accumulated text
-        textArea.innerHTML = accumulatedText; // Update the text area with the accumulated text
-    };
+        const transcript = e.results[0][0].transcript;
+        
+        accumulatedText += transcript + " ";
+        textArea.innerHTML = transcript;
+    }
 
     recognition.onerror = (e) => {
         console.error('Speech Recognition Error: ', e.error);
@@ -37,4 +36,4 @@ startButton.onclick = () => {
     if (speech) {
         recognition.start();
     }
-};
+}
