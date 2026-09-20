@@ -1,28 +1,29 @@
-debugger
 const startButton = document.getElementById('startButton');
 const copyButton = document.getElementById('copyButton');
 const textArea = document.getElementById('textInput');
 
-startButton.onclick = () => {
-    var speech = true;
-    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
 
-    if (!window.SpeechRecognition) {
-        alert('Your browser does not support Speech Recognition.');
-        return;
-    }
+let recognition;
+let isListening = false;
+let finalTranscript = '';
 
-    const recognition = new SpeechRecognition();
+if (!SpeechRecognition) {
+    startButton.disabled = true;
+    alert('Your browser does not support Speech Recognition.');
+} else {
+    recognition = new SpeechRecognition();
     recognition.interimResults = true;
+    recognition.continuous = false;
 
-    let finalTranscript = '';
-
-    recognition.onresult = (e) => {
+    recognition.onresult = (event) => {
         let interimTranscript = '';
 
-        for (let i = 0; i < e.results.length; i++) {
-            const transcript = e.results[i][0].transcript;
-            if (e.results[i].isFinal) {
+        for (const result of event.results) {
+            const transcript = result[0].transcript;
+
+            if (result.isFinal) {
                 finalTranscript += transcript + ' ';
             } else {
                 interimTranscript += transcript;
@@ -32,25 +33,42 @@ startButton.onclick = () => {
         textArea.value = finalTranscript + interimTranscript;
     };
 
-    recognition.onerror = (e) => {
-        console.error('Speech Recognition Error: ', e.error);
+    recognition.onerror = (event) => {
+        console.error('Speech Recognition Error:', event.error);
+        isListening = false;
+        startButton.textContent = 'START';
     };
 
     recognition.onend = () => {
-        if (speech) {
-            recognition.start(); // Restart recognition if speech is still true
-        }
+        isListening = false;
+        startButton.textContent = 'START';
     };
+}
 
-    if (speech) {
-        recognition.start();
+startButton.onclick = () => {
+    if (!recognition) return;
+
+    if (isListening) {
+        recognition.stop();
+        return;
     }
-}
 
-copyButton.onclick = () => {
-    navigator.clipboard.writeText(textArea.value).then(function () {
-        alert('Copied to clipboard!');
-    }, function (error) {
-        console.error('Copy text Error: ', error);
-    });
-}
+    finalTranscript = textArea.value;
+    
+    recognition.start();
+    isListening = true;
+    startButton.textContent = 'STOP';
+};
+
+copyButton.onclick = async () => {
+    try {
+        await navigator.clipboard.writeText(textArea.value);
+        copyButton.textContent = 'COPIED!';
+
+        setTimeout(() => {
+            copyButton.textContent = 'COPY';
+        }, 1000);
+    } catch (error) {
+        console.error('Copy text error:', error);
+    }
+};
